@@ -853,6 +853,14 @@ func (d *decodeState) convertNumber(s string) (interface{}, error) {
 	if d.useNumber {
 		return Number(s), nil
 	}
+	u, err := strconv.ParseUint(s, 10, 64)
+	if err == nil {
+		return u, nil
+	}
+	i, err := strconv.ParseInt(s, 10, 64)
+	if err == nil {
+		return i, nil
+	}
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return nil, &UnmarshalTypeError{Value: "number " + s, Type: reflect.TypeOf(0.0), Offset: int64(d.off)}
